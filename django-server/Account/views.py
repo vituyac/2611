@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
 from .swagger_descriptions import account_endpoints, admin_account_endpoints
 
 @account_endpoints["create"]
@@ -57,7 +59,16 @@ class AdminViewSet(mixins.CreateModelMixin,
                    mixins.ListModelMixin,
                    GenericViewSet):
     permission_classes = [IsAdminUser]
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     pagination_class = UsersAPIListPagination
     http_method_names = ['get', 'post', 'put', 'delete']
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance == request.user:
+            return Response(
+                {"detail": "Администратор не может удалить сам себя."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)
