@@ -10,7 +10,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
-from .swagger_descriptions import account_endpoints, admin_account_endpoints
+from .swagger_descriptions import account_endpoints, admin_account_endpoints, resetpassword_endpoints
+from django_rest_passwordreset.views import ResetPasswordRequestToken, ResetPasswordConfirm
 
 @account_endpoints["create"]
 class UserCreateAPIView(generics.CreateAPIView):
@@ -38,6 +39,14 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 
 @account_endpoints["token"]
 class TokenObtainPair(TokenObtainPairView):
+    pass
+
+@resetpassword_endpoints["request_token"]
+class ResetPasRequestToken(ResetPasswordRequestToken):
+    pass
+
+@resetpassword_endpoints["confirm_token"]
+class ResetPasConfirmToken(ResetPasswordConfirm):
     pass
 
 class UsersAPIListPagination(PageNumberPagination):

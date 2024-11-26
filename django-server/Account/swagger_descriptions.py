@@ -16,7 +16,6 @@ pagination_parameters = [
     ),
 ]
 
-# Описание эндпоинтов для Account
 account_endpoints = {
     "create": extend_schema(
         summary="Регистрация пользователя",
@@ -42,7 +41,6 @@ account_endpoints = {
     ),
 }
 
-# Описание эндпоинтов для Admin/Account
 admin_account_endpoints = {
     "list": extend_schema(
         summary="Список пользователей",
@@ -70,4 +68,17 @@ admin_account_endpoints = {
         description="Удаляет существующего пользователя по ID",
         tags=["Admin/Account"]
     ),
+}
+
+resetpassword_endpoints = {
+    "request_token": extend_schema(
+        summary="Запрос на восстановление пароля",
+        description="Отправляет письмо с токеном на почту",
+        tags=["password_reset"]
+    ),
+    "confirm_token": extend_schema(
+        summary="Смена пароля по токену",
+        description="Если токен верный, пароль меняется на новый",
+        tags=["password_reset"]
+    )
 }

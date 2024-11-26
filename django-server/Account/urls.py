@@ -16,4 +16,6 @@ urlpatterns = [
     path('Account/Me', UserMeAPIView.as_view()),
     path('Account/Update', UserUpdateAPIView.as_view()),
     path('Admin/', include(router.urls)),
+    path('password_reset/', ResetPasRequestToken.as_view()),
+    path('password_reset/confirm', ResetPasConfirmToken.as_view())
 ]
